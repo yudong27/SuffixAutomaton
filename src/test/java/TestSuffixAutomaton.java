@@ -17,10 +17,12 @@ public class TestSuffixAutomaton extends TestCase {
     public void testSAM() {
         SuffixAutomaton<Character> sam = new SuffixAutomaton<Character>();
         String s1 = "aabbabd";
-        String s2 = "cccabbad";
-        String s3 = "ddabbad";
+        String s2 = "cababd";
+        String s3 = "ddbabdc";
         sam.array2State(str2Array(s1));
         sam.array2State(str2Array(s2));
+        sam.addEndpos(str2Array(s1));
+        sam.addEndpos(str2Array(s2));
         sam.debugPrint();
         ArrayList<Character> res = sam.findLongestCommonSubstr(str2Array(s3));
         System.out.println(res);

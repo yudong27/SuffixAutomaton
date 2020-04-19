@@ -9,6 +9,8 @@ import java.io.Serializable;
 public class SuffixAutomaton<V> {
     State<V> root = new State<V>();
     State<V> last = null;
+    protected int strnum = 0;
+    protected ArrayList<ArrayList<V>> arrays = new ArrayList<ArrayList<V>>();
 
     
     public State<V> findSameVStateParent(State<V> currentState, V ch, State<V> newState) {
@@ -55,7 +57,24 @@ public class SuffixAutomaton<V> {
         return newState;
     }
 
+
+    public void addEndpos(ArrayList<V> vArrayList) {
+        State<V> pt = this.root;
+        for (int i =0; i<= vArrayList.size(); i++) {
+            State<V> ct = pt;
+            while (ct != null) {
+                ct.addEndpos(this.strnum, i);
+                ct = ct.failure;
+            }
+            if (i< vArrayList.size()) {
+                pt = pt.getNextState(vArrayList.get(i));
+            }
+        }
+        this.strnum += 1;
+    }
+
     public void array2State(ArrayList<V> vArrayList) {
+        this.arrays.add(vArrayList);
         this.last = root;
         Iterator<V> it = vArrayList.iterator();
         while (it.hasNext()) {
@@ -66,6 +85,7 @@ public class SuffixAutomaton<V> {
 
     public ArrayList<V> findLongestCommonSubstr(ArrayList<V> mArrayList) {
         State<V> currentState = this.root;
+        State<V> resState = this.root;
         int currentlen = 0;
         int maxlen = 0;
         int maxendpos = 0;
@@ -87,6 +107,7 @@ public class SuffixAutomaton<V> {
             if (currentlen > maxlen) {
                 maxlen = currentlen;
                 maxendpos = i;
+                resState = currentState;
             }
         }
         ArrayList<V> resArray = new ArrayList<V>();
@@ -96,6 +117,7 @@ public class SuffixAutomaton<V> {
             }
         }
         System.out.println("maxendpos = "+ maxendpos + " maxlen="+maxlen);
+        resState.debugPrint();
         return resArray;
     }
 
@@ -116,5 +138,7 @@ public class SuffixAutomaton<V> {
     public void debugPrint() {
         Set<Integer> used_index = new HashSet<Integer>();
         debugPrint(this.root, used_index);
+        System.out.println("=============================");
+        System.out.println("\n");
     }
 }
