@@ -139,6 +139,9 @@ public class SuffixAutomaton<V> {
         Set<Integer> used_index = new HashSet<Integer>();
         debugPrint(this.root, used_index);
         System.out.println("=============================");
+        for (int i=0;i<arrays.size();i++) {
+            System.out.println(""+i+": "+arrays.get(i));
+        }
         System.out.println("\n");
     }
 }
